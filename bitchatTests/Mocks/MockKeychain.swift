@@ -1,13 +1,13 @@
 //
 // MockKeychain.swift
-// bitchat
+// brindavanchat
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
 //
 
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 final class MockKeychain: KeychainManagerProtocol {
     private var storage: [String: Data] = [:]

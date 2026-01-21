@@ -1,6 +1,6 @@
 //
 // TextMessageView.swift
-// bitchat
+// brindavanchat
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -12,7 +12,7 @@ struct TextMessageView: View {
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
     @EnvironmentObject private var viewModel: ChatViewModel
     
-    let message: BitchatMessage
+    let message: brindavanchatMessage
     @Binding var expandedMessageIDs: Set<String>
     
     var body: some View {
@@ -44,7 +44,7 @@ struct TextMessageView: View {
                     if isExpanded { expandedMessageIDs.remove(message.id) }
                     else { expandedMessageIDs.insert(message.id) }
                 }
-                .font(.bitchatSystem(size: 11, weight: .medium, design: .monospaced))
+                .font(.brindavanchatSystem(size: 11, weight: .medium, design: .monospaced))
                 .foregroundColor(Color.blue)
                 .padding(.top, 4)
             }

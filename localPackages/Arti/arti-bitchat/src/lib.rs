@@ -1,4 +1,4 @@
-//! arti-bitchat: Minimal FFI wrapper around arti-client for BitChat
+//! arti-brindavanchat: Minimal FFI wrapper around arti-client for brindavanchat
 //!
 //! Provides a C-compatible interface for embedding Arti (Rust Tor) in iOS/macOS apps.
 //! Exposes a SOCKS5 proxy on localhost that Swift code can route traffic through.

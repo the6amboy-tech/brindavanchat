@@ -1,6 +1,6 @@
 //
 // PaymentChipView.swift
-// bitchat
+// brindavanchat
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -73,7 +73,7 @@ struct PaymentChipView: View {
             HStack(spacing: 6) {
                 Text(paymentType.emoji)
                 Text(paymentType.label)
-                    .font(.bitchatSystem(size: 12, weight: .semibold, design: .monospaced))
+                    .font(.brindavanchatSystem(size: 12, weight: .semibold, design: .monospaced))
             }
             .padding(.vertical, 6)
             .padding(.horizontal, 12)

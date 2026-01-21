@@ -1,6 +1,6 @@
 //
 // PublicMessagePipeline.swift
-// bitchat
+// brindavanchat
 //
 // Handles batching and deduplication of public chat messages before surfacing them to the UI.
 //
@@ -9,13 +9,13 @@ import Foundation
 
 @MainActor
 protocol PublicMessagePipelineDelegate: AnyObject {
-    func pipelineCurrentMessages(_ pipeline: PublicMessagePipeline) -> [BitchatMessage]
-    func pipeline(_ pipeline: PublicMessagePipeline, setMessages messages: [BitchatMessage])
+    func pipelineCurrentMessages(_ pipeline: PublicMessagePipeline) -> [brindavanchatMessage]
+    func pipeline(_ pipeline: PublicMessagePipeline, setMessages messages: [brindavanchatMessage])
     func pipeline(_ pipeline: PublicMessagePipeline, normalizeContent content: String) -> String
     func pipeline(_ pipeline: PublicMessagePipeline, contentTimestampForKey key: String) -> Date?
     func pipeline(_ pipeline: PublicMessagePipeline, recordContentKey key: String, timestamp: Date)
     func pipelineTrimMessages(_ pipeline: PublicMessagePipeline)
-    func pipelinePrewarmMessage(_ pipeline: PublicMessagePipeline, message: BitchatMessage)
+    func pipelinePrewarmMessage(_ pipeline: PublicMessagePipeline, message: brindavanchatMessage)
     func pipelineSetBatchingState(_ pipeline: PublicMessagePipeline, isBatching: Bool)
 }
 
@@ -23,7 +23,7 @@ protocol PublicMessagePipelineDelegate: AnyObject {
 final class PublicMessagePipeline {
     weak var delegate: PublicMessagePipelineDelegate?
 
-    private var buffer: [BitchatMessage] = []
+    private var buffer: [brindavanchatMessage] = []
     private var timer: Timer?
     private let baseFlushInterval: TimeInterval
     private var dynamicFlushInterval: TimeInterval
@@ -51,7 +51,7 @@ final class PublicMessagePipeline {
         activeChannel = channel
     }
 
-    func enqueue(_ message: BitchatMessage) {
+    func enqueue(_ message: brindavanchatMessage) {
         buffer.append(message)
         scheduleFlush()
     }
@@ -91,7 +91,7 @@ private extension PublicMessagePipeline {
         delegate.pipelineSetBatchingState(self, isBatching: true)
 
         var existingIDs = Set(delegate.pipelineCurrentMessages(self).map { $0.id })
-        var pending: [(message: BitchatMessage, contentKey: String)] = []
+        var pending: [(message: brindavanchatMessage, contentKey: String)] = []
         var batchContentLatest: [String: Date] = [:]
 
         for message in buffer {
@@ -174,7 +174,7 @@ private extension PublicMessagePipeline {
         }
     }
 
-    func insertionIndex(for timestamp: Date, in messages: [BitchatMessage]) -> Int {
+    func insertionIndex(for timestamp: Date, in messages: [brindavanchatMessage]) -> Int {
         var low = 0
         var high = messages.count
         while low < high {

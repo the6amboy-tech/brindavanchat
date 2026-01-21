@@ -4,17 +4,17 @@ import BitLogger
 // Gossip-based sync manager using on-demand GCS filters
 final class GossipSyncManager {
     protocol Delegate: AnyObject {
-        func sendPacket(_ packet: BitchatPacket)
-        func sendPacket(to peerID: PeerID, packet: BitchatPacket)
-        func signPacketForBroadcast(_ packet: BitchatPacket) -> BitchatPacket
+        func sendPacket(_ packet: brindavanchatPacket)
+        func sendPacket(to peerID: PeerID, packet: brindavanchatPacket)
+        func signPacketForBroadcast(_ packet: brindavanchatPacket) -> brindavanchatPacket
         func getConnectedPeers() -> [PeerID]
     }
 
     private struct PacketStore {
-        private(set) var packets: [String: BitchatPacket] = [:]
+        private(set) var packets: [String: brindavanchatPacket] = [:]
         private(set) var order: [String] = []
 
-        mutating func insert(idHex: String, packet: BitchatPacket, capacity: Int) {
+        mutating func insert(idHex: String, packet: brindavanchatPacket, capacity: Int) {
             guard capacity > 0 else { return }
             if packets[idHex] != nil {
                 packets[idHex] = packet
@@ -28,14 +28,14 @@ final class GossipSyncManager {
             }
         }
 
-        func allPackets(isFresh: (BitchatPacket) -> Bool) -> [BitchatPacket] {
+        func allPackets(isFresh: (brindavanchatPacket) -> Bool) -> [brindavanchatPacket] {
             order.compactMap { key in
                 guard let packet = packets[key], isFresh(packet) else { return nil }
                 return packet
             }
         }
 
-        mutating func remove(where shouldRemove: (BitchatPacket) -> Bool) {
+        mutating func remove(where shouldRemove: (brindavanchatPacket) -> Bool) {
             var nextOrder: [String] = []
             for key in order {
                 guard let packet = packets[key] else { continue }
@@ -48,7 +48,7 @@ final class GossipSyncManager {
             order = nextOrder
         }
 
-        mutating func removeExpired(isFresh: (BitchatPacket) -> Bool) {
+        mutating func removeExpired(isFresh: (brindavanchatPacket) -> Bool) {
             remove { !isFresh($0) }
         }
     }
@@ -83,7 +83,7 @@ final class GossipSyncManager {
     private var messages = PacketStore()
     private var fragments = PacketStore()
     private var fileTransfers = PacketStore()
-    private var latestAnnouncementByPeer: [PeerID: (id: String, packet: BitchatPacket)] = [:]
+    private var latestAnnouncementByPeer: [PeerID: (id: String, packet: brindavanchatPacket)] = [:]
 
     // Timer
     private var periodicTimer: DispatchSourceTimer?
@@ -141,14 +141,14 @@ final class GossipSyncManager {
         }
     }
 
-    func onPublicPacketSeen(_ packet: BitchatPacket) {
+    func onPublicPacketSeen(_ packet: brindavanchatPacket) {
         queue.async { [weak self] in
             self?._onPublicPacketSeen(packet)
         }
     }
 
     // Helper to check if a packet is within the age threshold
-    private func isPacketFresh(_ packet: BitchatPacket) -> Bool {
+    private func isPacketFresh(_ packet: brindavanchatPacket) -> Bool {
         let nowMs = UInt64(Date().timeIntervalSince1970 * 1000)
         let ageThresholdMs = UInt64(config.maxMessageAgeSeconds * 1000)
 
@@ -159,7 +159,7 @@ final class GossipSyncManager {
         return packet.timestamp >= cutoffMs
     }
 
-    private func isAnnouncementFresh(_ packet: BitchatPacket) -> Bool {
+    private func isAnnouncementFresh(_ packet: brindavanchatPacket) -> Bool {
         guard config.stalePeerTimeoutSeconds > 0 else { return true }
         let nowMs = UInt64(Date().timeIntervalSince1970 * 1000)
         let timeoutMs = UInt64(config.stalePeerTimeoutSeconds * 1000)
@@ -168,7 +168,7 @@ final class GossipSyncManager {
         return packet.timestamp >= cutoffMs
     }
 
-    private func _onPublicPacketSeen(_ packet: BitchatPacket) {
+    private func _onPublicPacketSeen(_ packet: brindavanchatPacket) {
         guard let messageType = MessageType(rawValue: packet.type) else { return }
         let isBroadcastRecipient: Bool = {
             guard let r = packet.recipientID else { return true }
@@ -221,7 +221,7 @@ final class GossipSyncManager {
 
     private func sendRequestSync(for types: SyncTypeFlags) {
         let payload = buildGcsPayload(for: types)
-        let pkt = BitchatPacket(
+        let pkt = brindavanchatPacket(
             type: MessageType.requestSync.rawValue,
             senderID: Data(hexString: myPeerID.id) ?? Data(),
             recipientID: nil, // broadcast
@@ -246,7 +246,7 @@ final class GossipSyncManager {
             if let b = UInt8(hexByte, radix: 16) { recipient.append(b) }
             temp = String(temp.dropFirst(2))
         }
-        let pkt = BitchatPacket(
+        let pkt = brindavanchatPacket(
             type: MessageType.requestSync.rawValue,
             senderID: Data(hexString: myPeerID.id) ?? Data(),
             recipientID: recipient,
@@ -330,7 +330,7 @@ final class GossipSyncManager {
 
     // Build REQUEST_SYNC payload using current candidates and GCS params
     private func buildGcsPayload(for types: SyncTypeFlags) -> Data {
-        var candidates: [BitchatPacket] = []
+        var candidates: [brindavanchatPacket] = []
         if types.contains(.announce) {
             for (_, pair) in latestAnnouncementByPeer where isPacketFresh(pair.packet) {
                 candidates.append(pair.packet)

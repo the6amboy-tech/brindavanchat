@@ -1,6 +1,6 @@
 //
 // NoiseProtocolTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -10,7 +10,7 @@ import CryptoKit
 import Foundation
 import Testing
 
-@testable import bitchat
+@testable import brindavanchat
 
 // MARK: - Test Vector Support
 

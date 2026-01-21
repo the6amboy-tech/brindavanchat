@@ -1,6 +1,6 @@
 //
 // ChatViewModelRefactoringTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Pinning tests to characterize ChatViewModel behavior before refactoring.
 // These tests act as a safety net to ensure we don't break existing functionality.
@@ -8,7 +8,7 @@
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 struct ChatViewModelRefactoringTests {
 
@@ -94,7 +94,7 @@ struct ChatViewModelRefactoringTests {
         let senderID = PeerID(str: "sender_1")
 
         // Setup
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: "msg_1",
             sender: "bob",
             content: "Secret",
@@ -126,7 +126,7 @@ struct ChatViewModelRefactoringTests {
         let senderID = PeerID(str: "sender_2")
 
         // Setup
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: "msg_2",
             sender: "charlie",
             content: "Public Hi",

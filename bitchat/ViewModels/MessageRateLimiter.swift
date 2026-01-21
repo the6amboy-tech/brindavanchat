@@ -1,6 +1,6 @@
 //
 // MessageRateLimiter.swift
-// bitchat
+// brindavanchat
 //
 // Handles per-sender and per-content token buckets for public message intake.
 //

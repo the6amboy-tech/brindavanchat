@@ -1,6 +1,6 @@
 //
 // FragmentationTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -9,7 +9,7 @@
 import Testing
 import Foundation
 import CoreBluetooth
-@testable import bitchat
+@testable import brindavanchat
 
 struct FragmentationTests {
     
@@ -104,7 +104,7 @@ struct FragmentationTests {
 
         let remoteID = PeerID(str: "CAFEBABECAFEBABE")
         let fileContent = Data(repeating: 0x42, count: FileTransferLimits.maxPayloadBytes)
-        let filePacket = BitchatFilePacket(
+        let filePacket = brindavanchatFilePacket(
             fileName: "limit.bin",
             fileSize: UInt64(fileContent.count),
             mimeType: "application/octet-stream",
@@ -112,7 +112,7 @@ struct FragmentationTests {
         )
         let encoded = try #require(filePacket.encode(), "File packet encoding failed")
 
-        let packet = BitchatPacket(
+        let packet = brindavanchatPacket(
             type: MessageType.fileTransfer.rawValue,
             senderID: Data(hexString: remoteID.id) ?? Data(),
             recipientID: nil,
@@ -166,7 +166,7 @@ struct FragmentationTests {
         var corrupted = fragments
         if !corrupted.isEmpty {
             var p = corrupted[0]
-            p = BitchatPacket(
+            p = brindavanchatPacket(
                 type: p.type,
                 senderID: p.senderID,
                 recipientID: p.recipientID,
@@ -196,10 +196,10 @@ struct FragmentationTests {
 
 extension FragmentationTests {
     /// Thread-safe delegate that supports awaiting message delivery
-    private final class CaptureDelegate: BitchatDelegate, @unchecked Sendable {
+    private final class CaptureDelegate: brindavanchatDelegate, @unchecked Sendable {
         private let lock = NSLock()
         private var _publicMessages: [(peerID: PeerID, nickname: String, content: String)] = []
-        private var _receivedMessages: [BitchatMessage] = []
+        private var _receivedMessages: [brindavanchatMessage] = []
         private var publicMessageContinuation: CheckedContinuation<Void, Never>?
         private var receivedMessageContinuation: CheckedContinuation<Void, Never>?
         private var expectedPublicMessageCount: Int = 0
@@ -211,13 +211,13 @@ extension FragmentationTests {
             return _publicMessages
         }
 
-        var receivedMessages: [BitchatMessage] {
+        var receivedMessages: [brindavanchatMessage] {
             lock.lock()
             defer { lock.unlock() }
             return _receivedMessages
         }
 
-        func didReceiveMessage(_ message: BitchatMessage) {
+        func didReceiveMessage(_ message: brindavanchatMessage) {
             lock.lock()
             _receivedMessages.append(message)
             let count = _receivedMessages.count
@@ -328,10 +328,10 @@ extension FragmentationTests {
     }
 
     // Helper: build a large message packet (unencrypted public message)
-    private func makeLargePublicPacket(senderShortHex: PeerID, size: Int) -> BitchatPacket {
+    private func makeLargePublicPacket(senderShortHex: PeerID, size: Int) -> brindavanchatPacket {
         let content = String(repeating: "A", count: size)
         let payload = Data(content.utf8)
-        let pkt = BitchatPacket(
+        let pkt = brindavanchatPacket(
             type: MessageType.message.rawValue,
             senderID: Data(hexString: senderShortHex.id) ?? Data(),
             recipientID: nil,
@@ -344,14 +344,14 @@ extension FragmentationTests {
     }
 
     // Helper: fragment a packet using the same header format BLEService expects
-    private func fragmentPacket(_ packet: BitchatPacket, fragmentSize: Int, fragmentID: Data? = nil, pad: Bool = true) -> [BitchatPacket] {
+    private func fragmentPacket(_ packet: brindavanchatPacket, fragmentSize: Int, fragmentID: Data? = nil, pad: Bool = true) -> [brindavanchatPacket] {
         guard let fullData = packet.toBinaryData(padding: pad) else { return [] }
         let fid = fragmentID ?? Data((0..<8).map { _ in UInt8.random(in: 0...255) })
         let chunks: [Data] = stride(from: 0, to: fullData.count, by: fragmentSize).map { off in
             Data(fullData[off..<min(off + fragmentSize, fullData.count)])
         }
         let total = UInt16(chunks.count)
-        var packets: [BitchatPacket] = []
+        var packets: [brindavanchatPacket] = []
         for (i, chunk) in chunks.enumerated() {
             var payload = Data()
             payload.append(fid)
@@ -361,7 +361,7 @@ extension FragmentationTests {
             withUnsafeBytes(of: &totBE) { payload.append(contentsOf: $0) }
             payload.append(packet.type)
             payload.append(chunk)
-            let fpkt = BitchatPacket(
+            let fpkt = brindavanchatPacket(
                 type: MessageType.fragment.rawValue,
                 senderID: packet.senderID,
                 recipientID: packet.recipientID,

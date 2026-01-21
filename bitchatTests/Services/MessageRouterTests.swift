@@ -1,13 +1,13 @@
 //
 // MessageRouterTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for MessageRouter transport selection and outbox behavior.
 //
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 struct MessageRouterTests {
 

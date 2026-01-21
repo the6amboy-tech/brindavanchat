@@ -1,6 +1,6 @@
 //
 // GeohashParticipantTrackerTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for GeohashParticipantTracker.
 // This is free and unencumbered software released into the public domain.
@@ -8,7 +8,7 @@
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 /// Mock context for testing
 @MainActor

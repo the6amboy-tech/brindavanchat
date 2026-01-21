@@ -1,13 +1,13 @@
 //
 // UnifiedPeerServiceTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for UnifiedPeerService fingerprint and block resolution.
 //
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 struct UnifiedPeerServiceTests {
 

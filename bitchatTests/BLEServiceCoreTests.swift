@@ -1,6 +1,6 @@
 //
 // BLEServiceCoreTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Focused BLEService tests for packet handling behavior.
 //
@@ -8,7 +8,7 @@
 import Testing
 import Foundation
 import CoreBluetooth
-@testable import bitchat
+@testable import brindavanchat
 
 struct BLEServiceCoreTests {
 
@@ -58,8 +58,8 @@ private func makeService() -> BLEService {
     return BLEService(keychain: keychain, idBridge: idBridge, identityManager: identityManager)
 }
 
-private func makePublicPacket(content: String, sender: PeerID, timestamp: UInt64) -> BitchatPacket {
-    BitchatPacket(
+private func makePublicPacket(content: String, sender: PeerID, timestamp: UInt64) -> brindavanchatPacket {
+    brindavanchatPacket(
         type: MessageType.message.rawValue,
         senderID: Data(hexString: sender.id) ?? Data(),
         recipientID: nil,
@@ -70,12 +70,12 @@ private func makePublicPacket(content: String, sender: PeerID, timestamp: UInt64
     )
 }
 
-private final class PublicCaptureDelegate: BitchatDelegate {
+private final class PublicCaptureDelegate: brindavanchatDelegate {
     private let lock = NSLock()
-    private(set) var publicMessages: [BitchatMessage] = []
+    private(set) var publicMessages: [brindavanchatMessage] = []
 
     func didReceivePublicMessage(from peerID: PeerID, nickname: String, content: String, timestamp: Date, messageID: String?) {
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: messageID,
             sender: nickname,
             content: content,
@@ -92,13 +92,13 @@ private final class PublicCaptureDelegate: BitchatDelegate {
         lock.unlock()
     }
 
-    func didReceiveMessage(_ message: BitchatMessage) {}
+    func didReceiveMessage(_ message: brindavanchatMessage) {}
     func didConnectToPeer(_ peerID: PeerID) {}
     func didDisconnectFromPeer(_ peerID: PeerID) {}
     func didUpdatePeerList(_ peers: [PeerID]) {}
     func didUpdateBluetoothState(_ state: CBManagerState) {}
 
-    func publicMessagesSnapshot() -> [BitchatMessage] {
+    func publicMessagesSnapshot() -> [brindavanchatMessage] {
         lock.lock()
         defer { lock.unlock() }
         return publicMessages

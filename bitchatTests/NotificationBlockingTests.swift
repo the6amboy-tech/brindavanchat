@@ -1,6 +1,6 @@
 //
 // NotificationBlockingTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -9,7 +9,7 @@
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 struct NotificationBlockingTests {
 
@@ -80,8 +80,8 @@ struct NotificationBlockingTests {
 
     // MARK: - Message Blocking Tests
 
-    @Test("BitchatMessage with blocked sender is identified")
-    func bitchatMessage_blockedSenderIdentified() {
+    @Test("brindavanchatMessage with blocked sender is identified")
+    func brindavanchatMessage_blockedSenderIdentified() {
         let keychain = MockKeychain()
         let manager = MockIdentityManager(keychain)
 

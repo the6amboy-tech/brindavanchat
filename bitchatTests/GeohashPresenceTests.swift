@@ -1,6 +1,6 @@
 //
 // GeohashPresenceTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for the Geohash Presence (Kind 20001) feature.
 // This is free and unencumbered software released into the public domain.
@@ -9,7 +9,7 @@
 import Testing
 import Foundation
 import Combine
-@testable import bitchat
+@testable import brindavanchat
 
 // MARK: - NostrProtocol Presence Event Tests
 

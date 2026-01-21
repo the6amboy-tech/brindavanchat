@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "bitchat",
+    name: "brindavanchat",
     defaultLocalization: "en",
     platforms: [
         .iOS(.v16),
@@ -11,8 +11,8 @@ let package = Package(
     ],
     products: [
         .executable(
-            name: "bitchat",
-            targets: ["bitchat"]
+            name: "brindavanchat",
+            targets: ["brindavanchat"]
         ),
     ],
     dependencies:[
@@ -22,18 +22,18 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "bitchat",
+            name: "brindavanchat",
             dependencies: [
                 .product(name: "P256K", package: "swift-secp256k1"),
                 .product(name: "BitLogger", package: "BitLogger"),
                 .product(name: "Tor", package: "Arti")
             ],
-            path: "bitchat",
+            path: "brindavanchat",
             exclude: [
                 "Info.plist",
                 "Assets.xcassets",
-                "bitchat.entitlements",
-                "bitchat-macOS.entitlements",
+                "brindavanchat.entitlements",
+                "brindavanchat-macOS.entitlements",
                 "LaunchScreen.storyboard",
                 "ViewModels/Extensions/README.md"
             ],
@@ -42,9 +42,9 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "bitchatTests",
-            dependencies: ["bitchat"],
-            path: "bitchatTests",
+            name: "brindavanchatTests",
+            dependencies: ["brindavanchat"],
+            path: "brindavanchatTests",
             exclude: [
                 "Info.plist",
                 "README.md"

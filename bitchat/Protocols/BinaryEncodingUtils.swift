@@ -1,6 +1,6 @@
 //
 // BinaryEncodingUtils.swift
-// bitchat
+// brindavanchat
 //
 // Binary encoding utilities for efficient protocol messages
 //

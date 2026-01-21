@@ -1,6 +1,6 @@
 //
 // ChatViewModel.swift
-// bitchat
+// brindavanchat
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -9,12 +9,12 @@
 ///
 /// # ChatViewModel
 ///
-/// The central business logic and state management component for BitChat.
+/// The central business logic and state management component for brindavanchat.
 /// Coordinates between the UI layer and the networking/encryption services.
 ///
 /// ## Overview
 /// ChatViewModel implements the MVVM pattern, serving as the binding layer between
-/// SwiftUI views and the underlying BitChat services. It manages:
+/// SwiftUI views and the underlying brindavanchat services. It manages:
 /// - Message state and delivery
 /// - Peer connections and presence
 /// - Private chat sessions
@@ -23,7 +23,7 @@
 ///
 /// ## Architecture
 /// The ViewModel acts as:
-/// - **BitchatDelegate**: Receives messages and events from BLEService
+/// - **brindavanchatDelegate**: Receives messages and events from BLEService
 /// - **State Manager**: Maintains all UI-relevant state with @Published properties
 /// - **Command Processor**: Handles IRC-style commands (/msg, /who, etc.)
 /// - **Message Router**: Directs messages to appropriate chats (public/private)
@@ -89,10 +89,10 @@ import UIKit
 #endif
 import UniformTypeIdentifiers
 
-/// Manages the application state and business logic for BitChat.
+/// Manages the application state and business logic for brindavanchat.
 /// Acts as the primary coordinator between UI components and backend services,
-/// implementing the BitchatDelegate protocol to handle network events.
-final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProvider, GeohashParticipantContext, MessageFormattingContext {
+/// implementing the brindavanchatDelegate protocol to handle network events.
+final class ChatViewModel: ObservableObject, brindavanchatDelegate, CommandContextProvider, GeohashParticipantContext, MessageFormattingContext {
     // Use MessageFormattingEngine.Patterns for regex matching (shared, precompiled)
     typealias Patterns = MessageFormattingEngine.Patterns
 
@@ -117,7 +117,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     )
 
     @MainActor
-    private func normalizedSenderKey(for message: BitchatMessage) -> String {
+    private func normalizedSenderKey(for message: brindavanchatMessage) -> String {
         if let spid = message.senderPeerID {
             if spid.isGeoChat || spid.isGeoDM {
                 let full = (nostrKeyMapping[spid] ?? spid.bare).lowercased()
@@ -133,7 +133,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
 
     // MARK: - Published Properties
     
-    @Published var messages: [BitchatMessage] = []
+    @Published var messages: [brindavanchatMessage] = []
     @Published var currentColorScheme: ColorScheme = .light
     private let maxMessages = TransportConfig.meshTimelineCap // Maximum messages before oldest are removed
     @Published var isConnected = false
@@ -168,8 +168,8 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     // Computed properties for compatibility
     @MainActor
     var connectedPeers: Set<PeerID> { unifiedPeerService.connectedPeerIDs }
-    @Published var allPeers: [BitchatPeer] = []
-    var privateChats: [PeerID: [BitchatMessage]] {
+    @Published var allPeers: [brindavanchatPeer] = []
+    var privateChats: [PeerID: [brindavanchatMessage]] {
         get { privateChatManager.privateChats }
         set { privateChatManager.privateChats = newValue }
     }
@@ -248,7 +248,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
         }
         return fullNoiseKeyHex
     }
-    private var peerIndex: [PeerID: BitchatPeer] = [:]
+    private var peerIndex: [PeerID: brindavanchatPeer] = [:]
     
     // MARK: - Autocomplete Properties
     
@@ -269,7 +269,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     var nostrRelayManager: NostrRelayManager?
     private let userDefaults = UserDefaults.standard
     let keychain: KeychainManagerProtocol
-    private let nicknameKey = "bitchat.nickname"
+    private let nicknameKey = "brindavanchat.nickname"
     // Location channel state (macOS supports manual geohash selection)
     @Published var activeChannel: ChannelID = .mesh
     var geoSubscriptionID: String? = nil
@@ -524,7 +524,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                 self.allPeers = peers
                 // Update peer index for O(1) lookups
                 // Deduplicate peers by ID to prevent crash from duplicate keys
-                var uniquePeers: [PeerID: BitchatPeer] = [:]
+                var uniquePeers: [PeerID: brindavanchatPeer] = [:]
                 for peer in peers {
                     // Keep the first occurrence of each peer ID
                     if uniquePeers[peer.peerID] == nil {
@@ -991,7 +991,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     
     // MARK: - Message Sending
     
-    /// Sends a message through the BitChat network.
+    /// Sends a message through the brindavanchat network.
     /// - Parameter content: The message content to send
     /// - Note: Automatically handles command processing if content starts with '/'
     ///         Routes to private chat if one is selected, otherwise broadcasts
@@ -1059,7 +1059,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
             }
         }
 
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: messageID,
             sender: displaySender,
             content: trimmed,
@@ -1196,7 +1196,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
         
         // Remove their public messages from current geohash timeline and visible list
         if let gh = currentGeohash {
-            let predicate: (BitchatMessage) -> Bool = { [self] msg in
+            let predicate: (brindavanchatMessage) -> Bool = { [self] msg in
                 guard let spid = msg.senderPeerID, spid.isGeoDM || spid.isGeoChat else { return false }
                 if let full = self.nostrKeyMapping[spid]?.lowercased() { return full == hex }
                 return false
@@ -1307,7 +1307,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
 
     @MainActor
     func removeMessage(withID messageID: String, cleanupFile: Bool = false) {
-        var removedMessage: BitchatMessage?
+        var removedMessage: brindavanchatMessage?
 
         if let idx = messages.firstIndex(where: { $0.id == messageID }) {
             removedMessage = messages.remove(at: idx)
@@ -1344,7 +1344,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     /// Add a local system message to a private chat (no network send)
     @MainActor
     func addLocalPrivateSystemMessage(_ content: String, to peerID: PeerID) {
-        let systemMessage = BitchatMessage(
+        let systemMessage = brindavanchatMessage(
             sender: "system",
             content: content,
             timestamp: Date(),
@@ -1550,7 +1550,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                 }
                 
                 // Create system message
-                let systemMessage = BitchatMessage(
+                let systemMessage = brindavanchatMessage(
                     id: UUID().uuidString,
                 sender: "System",
                 content: "\(peerNickname) \(action) you",
@@ -1627,7 +1627,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
             }
             
             // Show local notification immediately as system message (only in chat)
-            let localNotification = BitchatMessage(
+            let localNotification = brindavanchatMessage(
                 sender: "system",
                 content: "you took a screenshot",
                 timestamp: Date(),
@@ -1682,7 +1682,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
             
 
             // Show local notification immediately as system message (only in chat)
-            let localNotification = BitchatMessage(
+            let localNotification = brindavanchatMessage(
                 sender: "system",
                 content: "you took a screenshot",
                 timestamp: Date(),
@@ -1812,8 +1812,8 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     }
     
     @MainActor
-    func getPrivateChatMessages(for peerID: PeerID) -> [BitchatMessage] {
-        var combined: [BitchatMessage] = []
+    func getPrivateChatMessages(for peerID: PeerID) -> [brindavanchatMessage] {
+        var combined: [brindavanchatMessage] = []
 
         // Gather messages under the ephemeral peer ID
         if let ephemeralMessages = privateChats[peerID] {
@@ -1843,7 +1843,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
             }
         }
 
-        var bestByID: [String: BitchatMessage] = [:]
+        var bestByID: [String: brindavanchatMessage] = [:]
         for msg in combined {
             if let existing = bestByID[msg.id] {
                 let lhs = statusRank(existing.deliveryStatus)
@@ -1907,8 +1907,8 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
         _ = keychain.deleteAllKeychainData()
         
         // Clear UserDefaults identity data
-        userDefaults.removeObject(forKey: "bitchat.noiseIdentityKey")
-        userDefaults.removeObject(forKey: "bitchat.messageRetentionKey")
+        userDefaults.removeObject(forKey: "brindavanchat.noiseIdentityKey")
+        userDefaults.removeObject(forKey: "brindavanchat.messageRetentionKey")
         
         // Clear verified fingerprints
         verifiedFingerprints.removeAll()
@@ -2095,7 +2095,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     // MARK: - Message Formatting
     
     @MainActor
-    func formatMessageAsText(_ message: BitchatMessage, colorScheme: ColorScheme) -> AttributedString {
+    func formatMessageAsText(_ message: brindavanchatMessage, colorScheme: ColorScheme) -> AttributedString {
         // Determine if this message was sent by self (mesh, geo, or DM)
         let isSelf: Bool = {
             if let spid = message.senderPeerID {
@@ -2142,9 +2142,9 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
             senderStyle.foregroundColor = baseColor
             // Bold the user's own nickname
             let fontWeight: Font.Weight = isSelf ? .bold : .medium
-            senderStyle.font = .bitchatSystem(size: 14, weight: fontWeight, design: .monospaced)
+            senderStyle.font = .brindavanchatSystem(size: 14, weight: fontWeight, design: .monospaced)
             // Make sender clickable: encode senderPeerID into a custom URL
-            if let spid = message.senderPeerID, let url = URL(string: "bitchat://user/\(spid.toPercentEncoded())") {
+            if let spid = message.senderPeerID, let url = URL(string: "brindavanchat://user/\(spid.toPercentEncoded())") {
                 senderStyle.link = url
             }
 
@@ -2177,8 +2177,8 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                 var plainStyle = AttributeContainer()
                 plainStyle.foregroundColor = baseColor
                 plainStyle.font = isSelf
-                    ? .bitchatSystem(size: 14, weight: .bold, design: .monospaced)
-                    : .bitchatSystem(size: 14, design: .monospaced)
+                    ? .brindavanchatSystem(size: 14, weight: .bold, design: .monospaced)
+                    : .brindavanchatSystem(size: 14, design: .monospaced)
                 result.append(AttributedString(content).mergingAttributes(plainStyle))
             } else {
             // Reuse compiled regexes and detector from MessageFormattingEngine
@@ -2274,8 +2274,8 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                             var beforeStyle = AttributeContainer()
                             beforeStyle.foregroundColor = baseColor
                             beforeStyle.font = isSelf
-                                ? .bitchatSystem(size: 14, weight: .bold, design: .monospaced)
-                                : .bitchatSystem(size: 14, design: .monospaced)
+                                ? .brindavanchatSystem(size: 14, weight: .bold, design: .monospaced)
+                                : .brindavanchatSystem(size: 14, design: .monospaced)
                             if isMentioned {
                                 beforeStyle.font = beforeStyle.font?.bold()
                             }
@@ -2305,7 +2305,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                             return false
                         }()
                         var mentionStyle = AttributeContainer()
-                        mentionStyle.font = .bitchatSystem(size: 14, weight: isSelf ? .bold : .semibold, design: .monospaced)
+                        mentionStyle.font = .brindavanchatSystem(size: 14, weight: isSelf ? .bold : .semibold, design: .monospaced)
                         let mentionColor: Color = isMentionToMe ? .orange : baseColor
                         mentionStyle.foregroundColor = mentionColor
                         // Emit '@' (non-localizable symbol - use interpolation to avoid extraction)
@@ -2322,7 +2322,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                     } else {
                         // Style non-mention matches
                         if type == "hashtag" {
-                            // If the hashtag is a valid geohash, make it tappable (bitchat://geohash/<gh>)
+                            // If the hashtag is a valid geohash, make it tappable (brindavanchat://geohash/<gh>)
                             let token = String(matchText.dropFirst()).lowercased()
                             let allowed = Set("0123456789bcdefghjkmnpqrstuvwxyz")
                             let isGeohash = (2...12).contains(token.count) && token.allSatisfy { allowed.contains($0) }
@@ -2350,10 +2350,10 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                             }()
                             var tagStyle = AttributeContainer()
                             tagStyle.font = isSelf
-                                ? .bitchatSystem(size: 14, weight: .bold, design: .monospaced)
-                                : .bitchatSystem(size: 14, design: .monospaced)
+                                ? .brindavanchatSystem(size: 14, weight: .bold, design: .monospaced)
+                                : .brindavanchatSystem(size: 14, design: .monospaced)
                             tagStyle.foregroundColor = baseColor
-                            if isGeohash && !attachedToMention && standalone, let url = URL(string: "bitchat://geohash/\(token)") {
+                            if isGeohash && !attachedToMention && standalone, let url = URL(string: "brindavanchat://geohash/\(token)") {
                                 tagStyle.link = url
                                 tagStyle.underlineStyle = .single
                             }
@@ -2364,21 +2364,21 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                             var spacer = AttributeContainer()
                             spacer.foregroundColor = baseColor
                             spacer.font = isSelf
-                                ? .bitchatSystem(size: 14, weight: .bold, design: .monospaced)
-                                : .bitchatSystem(size: 14, design: .monospaced)
+                                ? .brindavanchatSystem(size: 14, weight: .bold, design: .monospaced)
+                                : .brindavanchatSystem(size: 14, design: .monospaced)
                             result.append(AttributedString(" ").mergingAttributes(spacer))
                         } else if type == "lightning" || type == "bolt11" || type == "lnurl" {
                             // Skip inline invoice/link; a styled chip is rendered below the message
                             var spacer = AttributeContainer()
                             spacer.foregroundColor = baseColor
                             spacer.font = isSelf
-                                ? .bitchatSystem(size: 14, weight: .bold, design: .monospaced)
-                                : .bitchatSystem(size: 14, design: .monospaced)
+                                ? .brindavanchatSystem(size: 14, weight: .bold, design: .monospaced)
+                                : .brindavanchatSystem(size: 14, design: .monospaced)
                             result.append(AttributedString(" ").mergingAttributes(spacer))
                         } else {
                             // Keep URL styling and make it tappable via .link attribute
                             var matchStyle = AttributeContainer()
-                            matchStyle.font = .bitchatSystem(size: 14, weight: isSelf ? .bold : .semibold, design: .monospaced)
+                            matchStyle.font = .brindavanchatSystem(size: 14, weight: isSelf ? .bold : .semibold, design: .monospaced)
                             if type == "url" {
                                 matchStyle.foregroundColor = isSelf ? .orange : .blue
                                 matchStyle.underlineStyle = .single
@@ -2402,8 +2402,8 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                 var remainingStyle = AttributeContainer()
                 remainingStyle.foregroundColor = baseColor
                 remainingStyle.font = isSelf
-                    ? .bitchatSystem(size: 14, weight: .bold, design: .monospaced)
-                    : .bitchatSystem(size: 14, design: .monospaced)
+                    ? .brindavanchatSystem(size: 14, weight: .bold, design: .monospaced)
+                    : .brindavanchatSystem(size: 14, design: .monospaced)
                 if isMentioned {
                     remainingStyle.font = remainingStyle.font?.bold()
                 }
@@ -2415,21 +2415,21 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
             let timestamp = AttributedString(" [\(message.formattedTimestamp)]")
             var timestampStyle = AttributeContainer()
             timestampStyle.foregroundColor = Color.gray.opacity(0.7)
-            timestampStyle.font = .bitchatSystem(size: 10, design: .monospaced)
+            timestampStyle.font = .brindavanchatSystem(size: 10, design: .monospaced)
             result.append(timestamp.mergingAttributes(timestampStyle))
         } else {
             // System message
             var contentStyle = AttributeContainer()
             contentStyle.foregroundColor = Color.gray
             let content = AttributedString("* \(message.content) *")
-            contentStyle.font = .bitchatSystem(size: 12, design: .monospaced).italic()
+            contentStyle.font = .brindavanchatSystem(size: 12, design: .monospaced).italic()
             result.append(content.mergingAttributes(contentStyle))
             
             // Add timestamp at the end for system messages too
             let timestamp = AttributedString(" [\(message.formattedTimestamp)]")
             var timestampStyle = AttributeContainer()
             timestampStyle.foregroundColor = Color.gray.opacity(0.5)
-            timestampStyle.font = .bitchatSystem(size: 10, design: .monospaced)
+            timestampStyle.font = .brindavanchatSystem(size: 10, design: .monospaced)
             result.append(timestamp.mergingAttributes(timestampStyle))
         }
         
@@ -2440,7 +2440,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     }
 
     @MainActor
-    func formatMessageHeader(_ message: BitchatMessage, colorScheme: ColorScheme) -> AttributedString {
+    func formatMessageHeader(_ message: brindavanchatMessage, colorScheme: ColorScheme) -> AttributedString {
         let isSelf: Bool = {
             if let spid = message.senderPeerID {
                 if case .location(let ch) = activeChannel, spid.id.hasPrefix("nostr:") {
@@ -2461,7 +2461,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
         if message.sender == "system" {
             var style = AttributeContainer()
             style.foregroundColor = baseColor
-            style.font = .bitchatSystem(size: 14, weight: .medium, design: .monospaced)
+            style.font = .brindavanchatSystem(size: 14, weight: .medium, design: .monospaced)
             return AttributedString(message.sender).mergingAttributes(style)
         }
 
@@ -2469,9 +2469,9 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
         let (baseName, suffix) = message.sender.splitSuffix()
         var senderStyle = AttributeContainer()
         senderStyle.foregroundColor = baseColor
-        senderStyle.font = .bitchatSystem(size: 14, weight: isSelf ? .bold : .medium, design: .monospaced)
+        senderStyle.font = .brindavanchatSystem(size: 14, weight: isSelf ? .bold : .medium, design: .monospaced)
         if let spid = message.senderPeerID,
-           let url = URL(string: "bitchat://user/\(spid.id.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? spid.id)") {
+           let url = URL(string: "brindavanchat://user/\(spid.id.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? spid.id)") {
             senderStyle.link = url
         }
 
@@ -2598,7 +2598,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     }
 
     @MainActor
-    private func peerColor(for message: BitchatMessage, isDark: Bool) -> Color {
+    private func peerColor(for message: brindavanchatMessage, isDark: Bool) -> Color {
         if let spid = message.senderPeerID {
             if spid.isGeoChat || spid.isGeoDM {
                 let full = nostrKeyMapping[spid]?.lowercased() ?? spid.bare.lowercased()
@@ -2617,7 +2617,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     // MARK: - MessageFormattingContext Protocol
 
     @MainActor
-    func isSelfMessage(_ message: BitchatMessage) -> Bool {
+    func isSelfMessage(_ message: brindavanchatMessage) -> Bool {
         if let spid = message.senderPeerID {
             // In geohash channels, compare against our per-geohash nostr short ID
             if case .location(let ch) = activeChannel, spid.isGeoChat {
@@ -2645,13 +2645,13 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     }
 
     @MainActor
-    func senderColor(for message: BitchatMessage, isDark: Bool) -> Color {
+    func senderColor(for message: brindavanchatMessage, isDark: Bool) -> Color {
         return peerColor(for: message, isDark: isDark)
     }
 
     @MainActor
     func peerURL(for peerID: PeerID) -> URL? {
-        return URL(string: "bitchat://user/\(peerID.toPercentEncoded())")
+        return URL(string: "brindavanchat://user/\(peerID.toPercentEncoded())")
     }
 
     // Public helpers for views to color peers consistently in lists
@@ -2769,7 +2769,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     
     // MARK: - Message Management
     
-    private func addMessage(_ message: BitchatMessage) {
+    private func addMessage(_ message: brindavanchatMessage) {
         // Check for duplicates
         guard !messages.contains(where: { $0.id == message.id }) else { return }
         messages.append(message)
@@ -2803,7 +2803,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     
     // MARK: - Peer Lookup Helpers
     
-    func getPeer(byID peerID: PeerID) -> BitchatPeer? {
+    func getPeer(byID peerID: PeerID) -> brindavanchatPeer? {
         return peerIndex[peerID]
     }
     
@@ -2972,7 +2972,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
         }
     }
     
-    // MARK: - BitchatDelegate Methods
+    // MARK: - brindavanchatDelegate Methods
     
     // MARK: - Command Handling
     
@@ -2998,7 +2998,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     
     // MARK: - Message Reception
     
-    func didReceiveMessage(_ message: BitchatMessage) {
+    func didReceiveMessage(_ message: brindavanchatMessage) {
         Task { @MainActor in
             // Early validation
             guard !isMessageBlocked(message) else { return }
@@ -3064,7 +3064,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
 
                 let senderName = unifiedPeerService.getPeer(by: peerID)?.nickname ?? "Unknown"
                 let pmMentions = parseMentions(from: pm.content)
-                let msg = BitchatMessage(
+                let msg = brindavanchatMessage(
                     id: pm.messageID,
                     sender: senderName,
                     content: pm.content,
@@ -3177,7 +3177,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
         Task { @MainActor in
             let normalized = content.trimmingCharacters(in: .whitespacesAndNewlines)
             let publicMentions = parseMentions(from: normalized)
-            let msg = BitchatMessage(
+            let msg = brindavanchatMessage(
                 id: messageID,
                 sender: nickname,
                 content: normalized,
@@ -3283,7 +3283,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                 if privateChats[stableKeyHex] == nil { privateChats[stableKeyHex] = [] }
                 let existing = Set(privateChats[stableKeyHex]!.map { $0.id })
                 for msg in messages where !existing.contains(msg.id) {
-                    let updated = BitchatMessage(
+                    let updated = brindavanchatMessage(
                         id: msg.id,
                         sender: msg.sender,
                         content: msg.content,
@@ -3338,7 +3338,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
             // Clean up stale unread peer IDs whenever peer list updates
             self.cleanupStaleUnreadPeerIDs()
             
-            // Smart notification logic for "bitchatters nearby"
+            // Smart notification logic for "brindavanchatters nearby"
             let meshPeers = peers.filter { peerID in
                 self.meshService.isPeerConnected(peerID) || self.meshService.isPeerReachable(peerID)
             }
@@ -3357,7 +3357,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
                     self.recentlySeenPeers.formUnion(newPeers)
                     NotificationService.shared.sendNetworkAvailableNotification(peerCount: meshPeers.count)
                     SecureLogger.info(
-                        "👥 Sent bitchatters nearby notification for \(meshPeers.count) mesh peers (new: \(newPeers.count))",
+                        "👥 Sent brindavanchatters nearby notification for \(meshPeers.count) mesh peers (new: \(newPeers.count))",
                         category: .session
                     )
                     self.scheduleNetworkResetTimer()
@@ -3598,7 +3598,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
             let currentStatus = chatMessages[index].deliveryStatus
             guard !shouldSkipUpdate(currentStatus: currentStatus, newStatus: status) else { continue }
             
-            // Update delivery status directly (BitchatMessage is a class/reference type)
+            // Update delivery status directly (brindavanchatMessage is a class/reference type)
             privateChats[peerID]?[index].deliveryStatus = status
         }
         
@@ -3611,7 +3611,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     
     // MARK: - Helper for System Messages
     func addSystemMessage(_ content: String, timestamp: Date = Date()) {
-        let systemMessage = BitchatMessage(
+        let systemMessage = brindavanchatMessage(
             sender: "system",
             content: content,
             timestamp: timestamp,
@@ -3624,7 +3624,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     /// If mesh is currently active, also append to the visible `messages`.
     @MainActor
     func addMeshOnlySystemMessage(_ content: String) {
-        let systemMessage = BitchatMessage(
+        let systemMessage = brindavanchatMessage(
             sender: "system",
             content: content,
             timestamp: Date(),
@@ -3640,7 +3640,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     /// Also persists the message into the active channel's backing store so it survives timeline rebinds.
     @MainActor
     func addPublicSystemMessage(_ content: String) {
-        let systemMessage = BitchatMessage(
+        let systemMessage = brindavanchatMessage(
             sender: "system",
             content: content,
             timestamp: Date(),
@@ -3729,7 +3729,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     
     /// Handle incoming public message
     @MainActor
-    func handlePublicMessage(_ message: BitchatMessage) {
+    func handlePublicMessage(_ message: brindavanchatMessage) {
         let finalMessage = processActionMessage(message)
 
         // Drop if sender is blocked (covers geohash via Nostr pubkey mapping)
@@ -3785,7 +3785,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
     
         /// Check for mentions and send notifications
         
-        func checkForMentions(_ message: BitchatMessage) {    // Determine our acceptable mention token. If any connected peer shares our nickname,
+        func checkForMentions(_ message: brindavanchatMessage) {    // Determine our acceptable mention token. If any connected peer shares our nickname,
     // require the disambiguated form '<nickname>#<peerIDprefix>' to trigger.
     var myTokens: Set<String> = [nickname]
     let meshPeers = meshService.getPeerNicknames()
@@ -3803,7 +3803,7 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
 }
 
     /// Send haptic feedback for special messages (iOS only)
-    func sendHapticFeedback(for message: BitchatMessage) {        #if os(iOS)
+    func sendHapticFeedback(for message: brindavanchatMessage) {        #if os(iOS)
         guard UIApplication.shared.applicationState == .active else { return }
         
         // Build acceptable target tokens: base nickname and, if in a location channel, nickname with '#abcd'
@@ -3848,11 +3848,11 @@ final class ChatViewModel: ObservableObject, BitchatDelegate, CommandContextProv
 // End of ChatViewModel class
 
 extension ChatViewModel: PublicMessagePipelineDelegate {
-    func pipelineCurrentMessages(_ pipeline: PublicMessagePipeline) -> [BitchatMessage] {
+    func pipelineCurrentMessages(_ pipeline: PublicMessagePipeline) -> [brindavanchatMessage] {
         messages
     }
 
-    func pipeline(_ pipeline: PublicMessagePipeline, setMessages messages: [BitchatMessage]) {
+    func pipeline(_ pipeline: PublicMessagePipeline, setMessages messages: [brindavanchatMessage]) {
         self.messages = messages
     }
 
@@ -3872,7 +3872,7 @@ extension ChatViewModel: PublicMessagePipelineDelegate {
         trimMessagesIfNeeded()
     }
 
-    func pipelinePrewarmMessage(_ pipeline: PublicMessagePipeline, message: BitchatMessage) {
+    func pipelinePrewarmMessage(_ pipeline: PublicMessagePipeline, message: brindavanchatMessage) {
         _ = formatMessageAsText(message, colorScheme: currentColorScheme)
     }
 

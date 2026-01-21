@@ -1,8 +1,8 @@
 //
 // CommandProcessor.swift
-// bitchat
+// brindavanchat
 //
-// Handles command parsing and execution for BitChat
+// Handles command parsing and execution for brindavanchat
 // This is free and unencumbered software released into the public domain.
 //
 
@@ -29,7 +29,7 @@ protocol CommandContextProvider: AnyObject {
     var nickname: String { get }
     var selectedPrivateChatPeer: PeerID? { get }
     var blockedUsers: Set<String> { get }
-    var privateChats: [PeerID: [BitchatMessage]] { get set }
+    var privateChats: [PeerID: [brindavanchatMessage]] { get set }
     var idBridge: NostrIdentityBridge { get }
 
     // MARK: - Peer Lookup

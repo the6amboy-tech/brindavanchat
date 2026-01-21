@@ -1,13 +1,13 @@
 //
 // HexStringTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for Data(hexString:) hex parsing
 //
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 struct HexStringTests {
 

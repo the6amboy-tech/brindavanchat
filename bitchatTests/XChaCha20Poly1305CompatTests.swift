@@ -1,6 +1,6 @@
 //
 // XChaCha20Poly1305CompatTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for XChaCha20-Poly1305 encryption with proper error handling.
 // This is free and unencumbered software released into the public domain.
@@ -8,7 +8,7 @@
 
 import Testing
 import struct Foundation.Data
-@testable import bitchat
+@testable import brindavanchat
 
 struct XChaCha20Poly1305CompatTests {
 

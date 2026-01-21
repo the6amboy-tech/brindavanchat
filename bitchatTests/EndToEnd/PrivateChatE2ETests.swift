@@ -1,6 +1,6 @@
 //
 // PrivateChatE2ETests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -9,7 +9,7 @@
 import Testing
 import CryptoKit
 import struct Foundation.UUID
-@testable import bitchat
+@testable import brindavanchat
 
 struct PrivateChatE2ETests {
     
@@ -130,11 +130,11 @@ struct PrivateChatE2ETests {
             alice.packetDeliveryHandler = { packet in
                 // Encrypt outgoing private messages
                 if packet.type == 0x01,
-                   let message = BitchatMessage(packet.payload),
+                   let message = brindavanchatMessage(packet.payload),
                    message.isPrivate {
                     do {
                         let encrypted = try aliceManager.encrypt(packet.payload, for: bob.peerID)
-                        let encryptedPacket = BitchatPacket(
+                        let encryptedPacket = brindavanchatPacket(
                             type: 0x02, // Encrypted message type
                             senderID: packet.senderID,
                             recipientID: packet.recipientID,
@@ -155,7 +155,7 @@ struct PrivateChatE2ETests {
                 if packet.type == 0x02 {
                     do {
                         let decrypted = try bobManager.decrypt(packet.payload, from: alice.peerID)
-                        if let message = BitchatMessage(decrypted) {
+                        if let message = brindavanchatMessage(decrypted) {
                             #expect(message.content == TestConstants.testMessage1)
                             #expect(message.isPrivate)
                             receiveEncryptedMessage()

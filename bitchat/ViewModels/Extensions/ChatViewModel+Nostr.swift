@@ -1,6 +1,6 @@
 //
 // ChatViewModel+Nostr.swift
-// bitchat
+// brindavanchat
 //
 // Geohash and Nostr logic for ChatViewModel
 //
@@ -120,7 +120,7 @@ extension ChatViewModel {
         let rawTs = Date(timeIntervalSince1970: TimeInterval(event.created_at))
         let timestamp = min(rawTs, Date())
         let mentions = parseMentions(from: content)
-        let msg = BitchatMessage(
+        let msg = brindavanchatMessage(
             id: event.id,
             sender: senderName,
             content: content,
@@ -150,9 +150,9 @@ extension ChatViewModel {
         deduplicationService.recordNostrEvent(giftWrap.id)
         
         guard let (content, senderPubkey, rumorTs) = try? NostrProtocol.decryptPrivateMessage(giftWrap: giftWrap, recipientIdentity: id),
-              content.hasPrefix("bitchat1:"),
-              let packetData = Self.base64URLDecode(String(content.dropFirst("bitchat1:".count))),
-              let packet = BitchatPacket.from(packetData),
+              content.hasPrefix("brindavanchat1:"),
+              let packetData = Self.base64URLDecode(String(content.dropFirst("brindavanchat1:".count))),
+              let packet = brindavanchatPacket.from(packetData),
               packet.type == MessageType.noiseEncrypted.rawValue,
               let noisePayload = NoisePayload.decode(packet.payload)
         else {
@@ -332,7 +332,7 @@ extension ChatViewModel {
         // Clamp future timestamps
         let rawTs = Date(timeIntervalSince1970: TimeInterval(event.created_at))
         let mentions = parseMentions(from: content)
-        let msg = BitchatMessage(
+        let msg = brindavanchatMessage(
             id: event.id,
             sender: senderName,
             content: content,
@@ -380,9 +380,9 @@ extension ChatViewModel {
         
         SecureLogger.debug("GeoDM: decrypted gift-wrap id=\(giftWrap.id.prefix(16))... from=\(senderPubkey.prefix(8))...", category: .session)
         
-        guard content.hasPrefix("bitchat1:"),
-              let packetData = Self.base64URLDecode(String(content.dropFirst("bitchat1:".count))),
-              let packet = BitchatPacket.from(packetData),
+        guard content.hasPrefix("brindavanchat1:"),
+              let packetData = Self.base64URLDecode(String(content.dropFirst("brindavanchat1:".count))),
+              let packet = brindavanchatPacket.from(packetData),
               packet.type == MessageType.noiseEncrypted.rawValue,
               let payload = NoisePayload.decode(packet.payload)
         else {
@@ -547,7 +547,7 @@ extension ChatViewModel {
             let rawTs = Date(timeIntervalSince1970: TimeInterval(event.created_at))
             let ts = min(rawTs, Date())
             let mentions = self.parseMentions(from: content)
-            let msg = BitchatMessage(
+            let msg = brindavanchatMessage(
                 id: event.id,
                 sender: senderName,
                 content: content,
@@ -617,11 +617,11 @@ extension ChatViewModel {
                 return
             }
             
-            // Check if it's a BitChat packet embedded in the content (bitchat1:...)
-            if content.hasPrefix("bitchat1:") {
-                guard let packetData = Self.base64URLDecode(String(content.dropFirst("bitchat1:".count))),
-                      let packet = BitchatPacket.from(packetData) else {
-                    SecureLogger.error("Failed to decode embedded BitChat packet from Nostr DM", category: .session)
+            // Check if it's a brindavanchat packet embedded in the content (brindavanchat1:...)
+            if content.hasPrefix("brindavanchat1:") {
+                guard let packetData = Self.base64URLDecode(String(content.dropFirst("brindavanchat1:".count))),
+                      let packet = brindavanchatPacket.from(packetData) else {
+                    SecureLogger.error("Failed to decode embedded brindavanchat packet from Nostr DM", category: .session)
                     return
                 }
                 
@@ -696,7 +696,7 @@ extension ChatViewModel {
         return nil
     }
 
-    func sendDeliveryAckViaNostrEmbedded(_ message: BitchatMessage, wasReadBefore: Bool, senderPubkey: String, key: Data?) {
+    func sendDeliveryAckViaNostrEmbedded(_ message: brindavanchatMessage, wasReadBefore: Bool, senderPubkey: String, key: Data?) {
         // If we have a Noise key, try to route securely if possible, otherwise fallback to direct
         if let _ = key {
              // Ideally we would use MessageRouter here, but for simplicity in this direct callback:

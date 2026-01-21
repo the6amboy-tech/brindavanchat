@@ -1,13 +1,13 @@
 //
 // ChatViewModelTorTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for ChatViewModel+Tor.swift Tor lifecycle notification handlers.
 //
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 // MARK: - Test Helpers
 

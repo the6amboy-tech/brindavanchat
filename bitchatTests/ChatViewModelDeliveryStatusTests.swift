@@ -1,13 +1,13 @@
 //
 // ChatViewModelDeliveryStatusTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for ChatViewModel delivery status state machine.
 //
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 // MARK: - Test Helpers
 
@@ -42,7 +42,7 @@ struct ChatViewModelDeliveryStatusTests {
         let messageID = "test-msg-1"
 
         // Setup: create a message with .read status
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: messageID,
             sender: viewModel.nickname,
             content: "Test message",
@@ -73,7 +73,7 @@ struct ChatViewModelDeliveryStatusTests {
         let messageID = "test-msg-2"
 
         // Setup: create a message with .sent status
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: messageID,
             sender: viewModel.nickname,
             content: "Test message",
@@ -104,7 +104,7 @@ struct ChatViewModelDeliveryStatusTests {
         let messageID = "test-msg-3"
 
         // Setup: create a message with .delivered status
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: messageID,
             sender: viewModel.nickname,
             content: "Test message",
@@ -137,7 +137,7 @@ struct ChatViewModelDeliveryStatusTests {
         let messageID = "test-msg-4"
 
         // Setup: create a message with .sent status
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: messageID,
             sender: viewModel.nickname,
             content: "Test message",
@@ -174,7 +174,7 @@ struct ChatViewModelDeliveryStatusTests {
         let messageID = "public-msg-1"
 
         // Setup: add a message to public timeline with .sending status
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: messageID,
             sender: viewModel.nickname,
             content: "Public message",

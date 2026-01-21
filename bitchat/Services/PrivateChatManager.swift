@@ -1,6 +1,6 @@
 //
 // PrivateChatManager.swift
-// bitchat
+// brindavanchat
 //
 // Manages private chat sessions and messages
 // This is free and unencumbered software released into the public domain.
@@ -12,7 +12,7 @@ import SwiftUI
 
 /// Manages all private chat functionality
 final class PrivateChatManager: ObservableObject {
-    @Published var privateChats: [PeerID: [BitchatMessage]] = [:]
+    @Published var privateChats: [PeerID: [brindavanchatMessage]] = [:]
     @Published var selectedPeer: PeerID? = nil
     @Published var unreadMessages: Set<PeerID> = []
 
@@ -59,7 +59,7 @@ final class PrivateChatManager: ObservableObject {
                 for message in nostrMessages {
                     if !existingMessageIds.contains(message.id) {
                         // Update senderPeerID for correct read receipts
-                        let updatedMessage = BitchatMessage(
+                        let updatedMessage = brindavanchatMessage(
                             id: message.id,
                             sender: message.sender,
                             content: message.content,
@@ -127,7 +127,7 @@ final class PrivateChatManager: ObservableObject {
                 if let tempMessages = privateChats[tempPeerID] {
                     for message in tempMessages {
                         if !existingMessageIds.contains(message.id) {
-                            let updatedMessage = BitchatMessage(
+                            let updatedMessage = brindavanchatMessage(
                                 id: message.id,
                                 sender: message.sender,
                                 content: message.content,
@@ -217,7 +217,7 @@ final class PrivateChatManager: ObservableObject {
 
         var indexByID: [String: Int] = [:]
         indexByID.reserveCapacity(arr.count)
-        var deduped: [BitchatMessage] = []
+        var deduped: [brindavanchatMessage] = []
         deduped.reserveCapacity(arr.count)
 
         for msg in arr.sorted(by: { $0.timestamp < $1.timestamp }) {
@@ -248,7 +248,7 @@ final class PrivateChatManager: ObservableObject {
     
     // MARK: - Private Methods
     
-    private func sendReadReceipt(for message: BitchatMessage) {
+    private func sendReadReceipt(for message: brindavanchatMessage) {
         guard !sentReadReceipts.contains(message.id),
               let senderPeerID = message.senderPeerID else {
             return

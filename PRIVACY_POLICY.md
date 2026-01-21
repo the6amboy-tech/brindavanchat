@@ -1,10 +1,10 @@
-# bitchat Privacy Policy
+# brindavanchat Privacy Policy
 
 *Last updated: January 2025*
 
 ## Our Commitment
 
-bitchat is designed with privacy as its foundation. We believe private communication is a fundamental human right. This policy explains how bitchat protects your privacy.
+brindavanchat is designed with privacy as its foundation. We believe private communication is a fundamental human right. This policy explains how brindavanchat protects your privacy.
 
 ## Summary
 
@@ -13,7 +13,7 @@ bitchat is designed with privacy as its foundation. We believe private communica
 - **No tracking** - We have no analytics, telemetry, or user tracking
 - **Open source** - You can verify these claims by reading our code
 
-## What Information bitchat Stores
+## What Information brindavanchat Stores
 
 ### On Your Device Only
 
@@ -40,16 +40,16 @@ bitchat is designed with privacy as its foundation. We believe private communica
 
 ### Temporary Session Data
 
-During each session, bitchat temporarily maintains:
+During each session, brindavanchat temporarily maintains:
 - Active peer connections (forgotten when app closes)
 - Routing information for message delivery
 - Cached messages for offline peers (12 hours max)
 
 ## What Information is Shared
 
-### With Other bitchat Users
+### With Other brindavanchat Users
 
-When you use bitchat, nearby peers can see:
+When you use brindavanchat, nearby peers can see:
 - Your chosen nickname
 - Your ephemeral public key (changes each session)
 - Messages you send to public rooms or directly to them
@@ -64,7 +64,7 @@ When you join a password-protected room:
 
 ## What We DON'T Do
 
-bitchat **never**:
+brindavanchat **never**:
 - Collects personal information
 - Tracks your location
 - Stores data on servers
@@ -91,7 +91,7 @@ You have complete control:
 
 ## Bluetooth & Permissions
 
-bitchat requires Bluetooth permission to function:
+brindavanchat requires Bluetooth permission to function:
 - Used only for peer-to-peer communication
 - No location data is accessed or stored
 - Bluetooth is not used for tracking
@@ -99,7 +99,7 @@ bitchat requires Bluetooth permission to function:
 
 ## Children's Privacy
 
-bitchat does not knowingly collect information from children. The app has no age verification because it collects no personal information from anyone.
+brindavanchat does not knowingly collect information from children. The app has no age verification because it collects no personal information from anyone.
 
 ## Data Retention
 
@@ -125,15 +125,15 @@ If we update this policy:
 
 ## Contact
 
-bitchat is an open source project. For privacy questions:
-- View our source code: [https://github.com/permissionlesstech/bitchat/tree/main](https://github.com/permissionlesstech/bitchat/tree/main)
+brindavanchat is an open source project. For privacy questions:
+- View our source code: [https://github.com/permissionlesstech/brindavanchat/tree/main](https://github.com/permissionlesstech/brindavanchat/tree/main)
 - Open an issue on GitHub
 - Join the discussion in public rooms
 
 ## Philosophy
 
-Privacy isn't just a feature—it's the entire point. bitchat proves that modern communication doesn't require surrendering your privacy. No accounts, no servers, no surveillance. Just people talking freely.
+Privacy isn't just a feature—it's the entire point. brindavanchat proves that modern communication doesn't require surrendering your privacy. No accounts, no servers, no surveillance. Just people talking freely.
 
 ---
 
-*This policy is released into the public domain under The Unlicense, just like bitchat itself.*
+*This policy is released into the public domain under The Unlicense, just like brindavanchat itself.*

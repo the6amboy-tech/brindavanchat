@@ -1,6 +1,6 @@
 //
 // TestNetworkHelper.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Extracted shared, mutable integration state for nodes and noise sessions.
 // Keeps test containers nonmutating (Swift Testing-friendly).
@@ -8,7 +8,7 @@
 
 import Foundation
 import CryptoKit
-@testable import bitchat
+@testable import brindavanchat
 
 final class TestNetworkHelper {
     // Public, read-only views for tests; mutation only through methods
@@ -71,10 +71,10 @@ final class TestNetworkHelper {
             guard let self else { return }
             guard packet.ttl > 1 else { return }
             
-            if let message = BitchatMessage(packet.payload) {
+            if let message = brindavanchatMessage(packet.payload) {
                 guard message.senderPeerID != node.peerID else { return }
                 
-                let relayMessage = BitchatMessage(
+                let relayMessage = brindavanchatMessage(
                     id: message.id,
                     sender: message.sender,
                     content: message.content,
@@ -88,7 +88,7 @@ final class TestNetworkHelper {
                 )
                 
                 if let relayPayload = relayMessage.toBinaryPayload() {
-                    let relayPacket = BitchatPacket(
+                    let relayPacket = brindavanchatPacket(
                         type: packet.type,
                         senderID: packet.senderID,
                         recipientID: packet.recipientID,

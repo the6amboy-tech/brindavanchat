@@ -1,24 +1,24 @@
 //
 // PublicMessagePipelineTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for PublicMessagePipeline ordering and deduplication.
 //
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 @MainActor
 private final class TestPipelineDelegate: PublicMessagePipelineDelegate {
     private let dedupService = MessageDeduplicationService()
-    var messages: [BitchatMessage] = []
+    var messages: [brindavanchatMessage] = []
 
-    func pipelineCurrentMessages(_ pipeline: PublicMessagePipeline) -> [BitchatMessage] {
+    func pipelineCurrentMessages(_ pipeline: PublicMessagePipeline) -> [brindavanchatMessage] {
         messages
     }
 
-    func pipeline(_ pipeline: PublicMessagePipeline, setMessages messages: [BitchatMessage]) {
+    func pipeline(_ pipeline: PublicMessagePipeline, setMessages messages: [brindavanchatMessage]) {
         self.messages = messages
     }
 
@@ -36,7 +36,7 @@ private final class TestPipelineDelegate: PublicMessagePipelineDelegate {
 
     func pipelineTrimMessages(_ pipeline: PublicMessagePipeline) {}
 
-    func pipelinePrewarmMessage(_ pipeline: PublicMessagePipeline, message: BitchatMessage) {}
+    func pipelinePrewarmMessage(_ pipeline: PublicMessagePipeline, message: brindavanchatMessage) {}
 
     func pipelineSetBatchingState(_ pipeline: PublicMessagePipeline, isBatching: Bool) {}
 }
@@ -52,14 +52,14 @@ struct PublicMessagePipelineTests {
         let earlier = Date().addingTimeInterval(-10)
         let later = Date()
 
-        let messageA = BitchatMessage(
+        let messageA = brindavanchatMessage(
             id: "a",
             sender: "A",
             content: "Later",
             timestamp: later,
             isRelay: false
         )
-        let messageB = BitchatMessage(
+        let messageB = brindavanchatMessage(
             id: "b",
             sender: "A",
             content: "Earlier",
@@ -81,14 +81,14 @@ struct PublicMessagePipelineTests {
         pipeline.delegate = delegate
 
         let now = Date()
-        let messageA = BitchatMessage(
+        let messageA = brindavanchatMessage(
             id: "a",
             sender: "A",
             content: "Same",
             timestamp: now,
             isRelay: false
         )
-        let messageB = BitchatMessage(
+        let messageB = brindavanchatMessage(
             id: "b",
             sender: "A",
             content: "Same",
@@ -112,14 +112,14 @@ struct PublicMessagePipelineTests {
         pipeline.updateActiveChannel(.mesh)
 
         let base = Date()
-        let newer = BitchatMessage(
+        let newer = brindavanchatMessage(
             id: "new",
             sender: "A",
             content: "New",
             timestamp: base,
             isRelay: false
         )
-        let older = BitchatMessage(
+        let older = brindavanchatMessage(
             id: "old",
             sender: "A",
             content: "Old",
@@ -142,14 +142,14 @@ struct PublicMessagePipelineTests {
         pipeline.updateActiveChannel(.location(GeohashChannel(level: .city, geohash: "u4pruydq")))
 
         let base = Date()
-        let newer = BitchatMessage(
+        let newer = brindavanchatMessage(
             id: "new",
             sender: "A",
             content: "New",
             timestamp: base,
             isRelay: false
         )
-        let older = BitchatMessage(
+        let older = brindavanchatMessage(
             id: "old",
             sender: "A",
             content: "Old",

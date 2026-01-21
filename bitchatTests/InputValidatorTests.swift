@@ -1,6 +1,6 @@
 //
 // InputValidatorTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -8,7 +8,7 @@
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 struct InputValidatorTests {
 

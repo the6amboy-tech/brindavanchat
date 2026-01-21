@@ -1,6 +1,6 @@
 //
 // FingerprintView.swift
-// bitchat
+// brindavanchat
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -50,14 +50,14 @@ struct FingerprintView: View {
             // Header
             HStack {
                 Text(Strings.title)
-                    .font(.bitchatSystem(size: 16, weight: .bold, design: .monospaced))
+                    .font(.brindavanchatSystem(size: 16, weight: .bold, design: .monospaced))
                     .foregroundColor(textColor)
                 
                 Spacer()
                 
                 Button(action: { dismiss() }) {
                     Image(systemName: "xmark")
-                        .font(.bitchatSystem(size: 14, weight: .semibold))
+                        .font(.brindavanchatSystem(size: 14, weight: .semibold))
                 }
                 .foregroundColor(textColor)
             }
@@ -86,17 +86,17 @@ struct FingerprintView: View {
                 HStack {
                     if let icon = encryptionStatus.icon {
                         Image(systemName: icon)
-                            .font(.bitchatSystem(size: 20))
+                            .font(.brindavanchatSystem(size: 20))
                             .foregroundColor(encryptionStatus == .noiseVerified ? Color.green : textColor)
                     }
                     
                     VStack(alignment: .leading, spacing: 4) {
                         Text(peerNickname)
-                            .font(.bitchatSystem(size: 18, weight: .semibold, design: .monospaced))
+                            .font(.brindavanchatSystem(size: 18, weight: .semibold, design: .monospaced))
                             .foregroundColor(textColor)
                         
                         Text(encryptionStatus.description)
-                            .font(.bitchatSystem(size: 12, design: .monospaced))
+                            .font(.brindavanchatSystem(size: 12, design: .monospaced))
                             .foregroundColor(textColor.opacity(0.7))
                     }
                     
@@ -109,12 +109,12 @@ struct FingerprintView: View {
                 // Their fingerprint
                 VStack(alignment: .leading, spacing: 8) {
                     Text(Strings.theirFingerprint)
-                        .font(.bitchatSystem(size: 12, weight: .bold, design: .monospaced))
+                        .font(.brindavanchatSystem(size: 12, weight: .bold, design: .monospaced))
                         .foregroundColor(textColor.opacity(0.7))
                     
                     if let fingerprint = viewModel.getFingerprint(for: statusPeerID) {
                         Text(formatFingerprint(fingerprint))
-                            .font(.bitchatSystem(size: 14, design: .monospaced))
+                            .font(.brindavanchatSystem(size: 14, design: .monospaced))
                             .foregroundColor(textColor)
                             .multilineTextAlignment(.leading)
                             .lineLimit(nil)
@@ -135,7 +135,7 @@ struct FingerprintView: View {
                             }
                     } else {
                         Text(Strings.handshakePending)
-                            .font(.bitchatSystem(size: 14, design: .monospaced))
+                            .font(.brindavanchatSystem(size: 14, design: .monospaced))
                             .foregroundColor(Color.orange)
                             .padding()
                     }
@@ -144,12 +144,12 @@ struct FingerprintView: View {
                 // My fingerprint
                 VStack(alignment: .leading, spacing: 8) {
                     Text(Strings.yourFingerprint)
-                        .font(.bitchatSystem(size: 12, weight: .bold, design: .monospaced))
+                        .font(.brindavanchatSystem(size: 12, weight: .bold, design: .monospaced))
                         .foregroundColor(textColor.opacity(0.7))
                     
                     let myFingerprint = viewModel.getMyFingerprint()
                     Text(formatFingerprint(myFingerprint))
-                        .font(.bitchatSystem(size: 14, design: .monospaced))
+                        .font(.brindavanchatSystem(size: 14, design: .monospaced))
                         .foregroundColor(textColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
@@ -176,7 +176,7 @@ struct FingerprintView: View {
                     
                     VStack(spacing: 12) {
                         Text(isVerified ? Strings.verifiedBadge : Strings.notVerifiedBadge)
-                            .font(.bitchatSystem(size: 14, weight: .bold, design: .monospaced))
+                            .font(.brindavanchatSystem(size: 14, weight: .bold, design: .monospaced))
                             .foregroundColor(isVerified ? Color.green : Color.orange)
                             .frame(maxWidth: .infinity)
                         
@@ -187,7 +187,7 @@ struct FingerprintView: View {
                                 Text(Strings.verifyHint(peerNickname))
                             }
                         }
-                            .font(.bitchatSystem(size: 12, design: .monospaced))
+                            .font(.brindavanchatSystem(size: 12, design: .monospaced))
                             .foregroundColor(textColor.opacity(0.7))
                             .multilineTextAlignment(.center)
                             .lineLimit(nil)
@@ -200,7 +200,7 @@ struct FingerprintView: View {
                                 dismiss()
                             }) {
                                 Text(Strings.markVerified)
-                                    .font(.bitchatSystem(size: 14, weight: .bold, design: .monospaced))
+                                    .font(.brindavanchatSystem(size: 14, weight: .bold, design: .monospaced))
                                     .foregroundColor(.white)
                                     .padding(.horizontal, 20)
                                     .padding(.vertical, 10)
@@ -214,7 +214,7 @@ struct FingerprintView: View {
                                 dismiss()
                             }) {
                                 Text(Strings.removeVerification)
-                                    .font(.bitchatSystem(size: 14, weight: .bold, design: .monospaced))
+                                    .font(.brindavanchatSystem(size: 14, weight: .bold, design: .monospaced))
                                     .foregroundColor(.white)
                                     .padding(.horizontal, 20)
                                     .padding(.vertical, 10)

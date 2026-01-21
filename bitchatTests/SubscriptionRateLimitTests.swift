@@ -1,6 +1,6 @@
 //
 // SubscriptionRateLimitTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -8,7 +8,7 @@
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 /// Tests for BCH-01-004 fix: Rate-limiting subscription-triggered announces
 /// to prevent device enumeration attacks

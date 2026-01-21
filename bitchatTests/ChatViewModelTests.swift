@@ -1,6 +1,6 @@
 //
 // ChatViewModelTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for ChatViewModel using MockTransport for isolation.
 // This is free and unencumbered software released into the public domain.
@@ -8,7 +8,7 @@
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 // MARK: - Test Helpers
 
@@ -160,7 +160,7 @@ struct ChatViewModelReceivingTests {
     func didReceiveMessage_callsDelegate() async {
         let (_, transport) = makeTestableViewModel()
 
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: "msg-001",
             sender: "Alice",
             content: "Hello from Alice",
@@ -213,7 +213,7 @@ struct ChatViewModelRateLimitingTests {
         let now = Date()
 
         for i in 0..<6 {
-            let message = BitchatMessage(
+            let message = brindavanchatMessage(
                 id: "rate-\(i)",
                 sender: "Spammer",
                 content: "rate-msg-\(i)",
@@ -345,7 +345,7 @@ struct ChatViewModelPrivateChatSelectionTests {
 
         viewModel.privateChats = [
             peerA: [
-                BitchatMessage(
+                brindavanchatMessage(
                     id: "a-1",
                     sender: "A",
                     content: "Old",
@@ -357,7 +357,7 @@ struct ChatViewModelPrivateChatSelectionTests {
                 )
             ],
             peerB: [
-                BitchatMessage(
+                brindavanchatMessage(
                     id: "b-1",
                     sender: "B",
                     content: "New",
@@ -387,7 +387,7 @@ struct ChatViewModelPrivateChatSelectionTests {
 
         viewModel.privateChats = [
             peerA: [
-                BitchatMessage(
+                brindavanchatMessage(
                     id: "a-1",
                     sender: "A",
                     content: "Old",
@@ -399,7 +399,7 @@ struct ChatViewModelPrivateChatSelectionTests {
                 )
             ],
             peerB: [
-                BitchatMessage(
+                brindavanchatMessage(
                     id: "b-1",
                     sender: "B",
                     content: "New",
@@ -470,7 +470,7 @@ struct ChatViewModelPanicTests {
         // Set up some state
         transport.connectedPeers.insert(PeerID(str: "PEER1"))
         viewModel.messages = [
-            BitchatMessage(
+            brindavanchatMessage(
                 id: "panic-1",
                 sender: "Tester",
                 content: "Before",
@@ -479,7 +479,7 @@ struct ChatViewModelPanicTests {
             )
         ]
         viewModel.privateChats[PeerID(str: "PEER1")] = [
-            BitchatMessage(
+            brindavanchatMessage(
                 id: "pm-1",
                 sender: "Peer",
                 content: "Secret",

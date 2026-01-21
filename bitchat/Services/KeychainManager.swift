@@ -1,6 +1,6 @@
 //
 // KeychainManager.swift
-// bitchat
+// brindavanchat
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -79,8 +79,8 @@ protocol KeychainManagerProtocol {
 
 final class KeychainManager: KeychainManagerProtocol {
     // Use consistent service name for all keychain items
-    private let service = BitchatApp.bundleID
-    private let appGroup = "group.\(BitchatApp.bundleID)"
+    private let service = brindavanchatApp.bundleID
+    private let appGroup = "group.\(brindavanchatApp.bundleID)"
     
     // MARK: - Identity Keys
     
@@ -129,7 +129,7 @@ final class KeychainManager: KeychainManagerProtocol {
             kSecValueData as String: data,
             kSecAttrService as String: service,
             kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlocked,
-            kSecAttrLabel as String: "bitchat-\(key)"
+            kSecAttrLabel as String: "brindavanchat-\(key)"
         ]
         #if os(macOS)
         base[kSecAttrSynchronizable as String] = false
@@ -294,7 +294,7 @@ final class KeychainManager: KeychainManagerProtocol {
             kSecValueData as String: data,
             kSecAttrService as String: service,
             kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlocked,
-            kSecAttrLabel as String: "bitchat-\(key)"
+            kSecAttrLabel as String: "brindavanchat-\(key)"
         ]
         #if os(macOS)
         base[kSecAttrSynchronizable as String] = false
@@ -436,13 +436,13 @@ final class KeychainManager: KeychainManagerProtocol {
                 } else if service == self.service {
                     shouldDelete = true
                 } else if [
-                    "com.bitchat.passwords",
-                    "com.bitchat.deviceidentity",
-                    "com.bitchat.noise.identity",
-                    "chat.bitchat.passwords",
-                    "bitchat.keychain",
-                    "bitchat",
-                    "com.bitchat"
+                    "com.brindavanchat.passwords",
+                    "com.brindavanchat.deviceidentity",
+                    "com.brindavanchat.noise.identity",
+                    "chat.brindavanchat.passwords",
+                    "brindavanchat.keychain",
+                    "brindavanchat",
+                    "com.brindavanchat"
                 ].contains(service) {
                     shouldDelete = true
                 }
@@ -479,14 +479,14 @@ final class KeychainManager: KeychainManagerProtocol {
         // This catches any items that might have been missed above
         let knownServices = [
             self.service,  // Current service name
-            "com.bitchat.passwords",
-            "com.bitchat.deviceidentity", 
-            "com.bitchat.noise.identity",
-            "chat.bitchat.passwords",
-            "chat.bitchat.nostr",
-            "bitchat.keychain",
-            "bitchat",
-            "com.bitchat"
+            "com.brindavanchat.passwords",
+            "com.brindavanchat.deviceidentity", 
+            "com.brindavanchat.noise.identity",
+            "chat.brindavanchat.passwords",
+            "chat.brindavanchat.nostr",
+            "brindavanchat.keychain",
+            "brindavanchat",
+            "com.brindavanchat"
         ]
         
         for serviceName in knownServices {

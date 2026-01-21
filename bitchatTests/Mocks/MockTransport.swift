@@ -1,6 +1,6 @@
 //
 // MockTransport.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Mock Transport implementation for unit testing ChatViewModel.
 // This is free and unencumbered software released into the public domain.
@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 import CoreBluetooth
-@testable import bitchat
+@testable import brindavanchat
 
 /// Mock Transport implementation for testing ChatViewModel in isolation.
 /// Records all method calls and allows test code to verify interactions.
@@ -17,7 +17,7 @@ final class MockTransport: Transport {
 
     // MARK: - Protocol Properties
 
-    weak var delegate: BitchatDelegate?
+    weak var delegate: brindavanchatDelegate?
     weak var peerEventsDelegate: TransportPeerEventsDelegate?
 
     var myPeerID: PeerID = PeerID(str: "TESTPEER")
@@ -138,11 +138,11 @@ final class MockTransport: Transport {
         sentDeliveryAcks.append((messageID, peerID))
     }
 
-    func sendFileBroadcast(_ packet: BitchatFilePacket, transferId: String) {
+    func sendFileBroadcast(_ packet: brindavanchatFilePacket, transferId: String) {
         // Not tracked for current tests
     }
 
-    func sendFilePrivate(_ packet: BitchatFilePacket, to peerID: PeerID, transferId: String) {
+    func sendFilePrivate(_ packet: brindavanchatFilePacket, to peerID: PeerID, transferId: String) {
         // Not tracked for current tests
     }
 
@@ -197,7 +197,7 @@ final class MockTransport: Transport {
     }
 
     /// Simulates receiving a message
-    func simulateIncomingMessage(_ message: BitchatMessage) {
+    func simulateIncomingMessage(_ message: brindavanchatMessage) {
         delegate?.didReceiveMessage(message)
     }
 

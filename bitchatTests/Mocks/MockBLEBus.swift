@@ -1,13 +1,13 @@
 //
 // MockBLEBus.swift
-// bitchatTests
+// brindavanchatTests
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
 //
 
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 final class MockBLEBus {
     private var registry: [PeerID: MockBLEService] = [:]

@@ -1,6 +1,6 @@
 //
 // ChatViewModelExtensionsTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for ChatViewModel extensions (PrivateChat, Nostr, Tor).
 //
@@ -8,7 +8,7 @@
 import Testing
 import Foundation
 import Combine
-@testable import bitchat
+@testable import brindavanchat
 
 // MARK: - Test Helpers
 
@@ -86,7 +86,7 @@ struct ChatViewModelPrivateChatExtensionTests {
         let (viewModel, _) = makeTestableViewModel()
         let peerID = PeerID(str: "SENDER_001")
         
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: "msg-1",
             sender: "Sender",
             content: "Private Content",
@@ -114,7 +114,7 @@ struct ChatViewModelPrivateChatExtensionTests {
         let (viewModel, _) = makeTestableViewModel()
         let peerID = PeerID(str: "SENDER_001")
         
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: "msg-1",
             sender: "Sender",
             content: "Content",
@@ -138,7 +138,7 @@ struct ChatViewModelPrivateChatExtensionTests {
         // Set as currently viewing
         viewModel.selectedPrivateChatPeer = peerID
         
-        let message = BitchatMessage(
+        let message = brindavanchatMessage(
             id: "msg-1",
             sender: "Sender",
             content: "Content",
@@ -162,7 +162,7 @@ struct ChatViewModelPrivateChatExtensionTests {
         let fingerprint = "fp_123"
         
         // Setup old chat
-        let oldMessage = BitchatMessage(
+        let oldMessage = brindavanchatMessage(
             id: "msg-old",
             sender: "User",
             content: "Old message",
@@ -231,7 +231,7 @@ struct ChatViewModelPrivateChatExtensionTests {
         let geoPeerID = PeerID(nostr_: hexPubkey)
         viewModel.nostrKeyMapping[geoPeerID] = hexPubkey
         
-        let geoMessage = BitchatMessage(
+        let geoMessage = brindavanchatMessage(
             id: "msg-geo-blocked",
             sender: "BlockedGeoUser",
             content: "Spam",

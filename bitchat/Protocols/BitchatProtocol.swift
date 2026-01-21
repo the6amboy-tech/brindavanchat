@@ -1,19 +1,19 @@
 //
-// BitchatProtocol.swift
-// bitchat
+// brindavanchatProtocol.swift
+// brindavanchat
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
 //
 
 ///
-/// # BitchatProtocol
+/// # brindavanchatProtocol
 ///
-/// Defines the application-layer protocol for BitChat mesh networking, including
+/// Defines the application-layer protocol for brindavanchat mesh networking, including
 /// message types, packet structures, and encoding/decoding logic.
 ///
 /// ## Overview
-/// BitchatProtocol implements a binary protocol optimized for Bluetooth LE's
+/// brindavanchatProtocol implements a binary protocol optimized for Bluetooth LE's
 /// constrained bandwidth and MTU limitations. It provides:
 /// - Efficient binary message encoding
 /// - Message fragmentation for large payloads
@@ -63,7 +63,7 @@ import CoreBluetooth
 
 // MARK: - Message Types
 
-/// Simplified BitChat protocol message types.
+/// Simplified brindavanchat protocol message types.
 /// Reduced from 24 types to just 6 essential ones.
 /// All private communication metadata (receipts, status) is embedded in noiseEncrypted payloads.
 enum MessageType: UInt8 {
@@ -162,8 +162,8 @@ enum DeliveryStatus: Codable, Equatable, Hashable {
 
 // MARK: - Delegate Protocol
 
-protocol BitchatDelegate: AnyObject {
-    func didReceiveMessage(_ message: BitchatMessage)
+protocol brindavanchatDelegate: AnyObject {
+    func didReceiveMessage(_ message: brindavanchatMessage)
     func didConnectToPeer(_ peerID: PeerID)
     func didDisconnectFromPeer(_ peerID: PeerID)
     func didUpdatePeerList(_ peers: [PeerID])
@@ -182,7 +182,7 @@ protocol BitchatDelegate: AnyObject {
 }
 
 // Provide default implementation to make it effectively optional
-extension BitchatDelegate {
+extension brindavanchatDelegate {
     func isFavorite(fingerprint: String) -> Bool {
         return false
     }

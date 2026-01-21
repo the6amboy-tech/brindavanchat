@@ -13,7 +13,7 @@ struct TransportPeerSnapshot: Equatable, Hashable {
 
 protocol Transport: AnyObject {
     // Event sink
-    var delegate: BitchatDelegate? { get set }
+    var delegate: brindavanchatDelegate? { get set }
     // Peer events (preferred over publishers for UI)
     var peerEventsDelegate: TransportPeerEventsDelegate? { get set }
     
@@ -51,8 +51,8 @@ protocol Transport: AnyObject {
     func sendFavoriteNotification(to peerID: PeerID, isFavorite: Bool)
     func sendBroadcastAnnounce()
     func sendDeliveryAck(for messageID: String, to peerID: PeerID)
-    func sendFileBroadcast(_ packet: BitchatFilePacket, transferId: String)
-    func sendFilePrivate(_ packet: BitchatFilePacket, to peerID: PeerID, transferId: String)
+    func sendFileBroadcast(_ packet: brindavanchatFilePacket, transferId: String)
+    func sendFilePrivate(_ packet: brindavanchatFilePacket, to peerID: PeerID, transferId: String)
     func cancelTransfer(_ transferId: String)
 
     // QR verification (optional for transports)
@@ -67,8 +67,8 @@ protocol Transport: AnyObject {
 extension Transport {
     func sendVerifyChallenge(to peerID: PeerID, noiseKeyHex: String, nonceA: Data) {}
     func sendVerifyResponse(to peerID: PeerID, noiseKeyHex: String, nonceA: Data) {}
-    func sendFileBroadcast(_ packet: BitchatFilePacket, transferId: String) {}
-    func sendFilePrivate(_ packet: BitchatFilePacket, to peerID: PeerID, transferId: String) {}
+    func sendFileBroadcast(_ packet: brindavanchatFilePacket, transferId: String) {}
+    func sendFilePrivate(_ packet: brindavanchatFilePacket, to peerID: PeerID, transferId: String) {}
     func cancelTransfer(_ transferId: String) {}
 
     func sendMessage(_ content: String, mentions: [String], messageID: String, timestamp: Date) {

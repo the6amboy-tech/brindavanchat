@@ -1,12 +1,12 @@
 //
 // BinaryProtocolPaddingTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // This is free and unencumbered software released into the public domain.
 //
 
 import Testing
-@testable import bitchat
+@testable import brindavanchat
 
 struct BinaryProtocolPaddingTests {
     @Test func padded_vs_unpadded_length() throws {

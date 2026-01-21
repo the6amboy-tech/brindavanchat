@@ -1,6 +1,6 @@
 //
 //  Data+SHA256.swift
-//  bitchat
+//  brindavanchat
 //
 //  Created by Islam on 26/09/2025.
 //

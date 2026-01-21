@@ -1,6 +1,6 @@
 //
 // MinimalDistancePalette.swift
-// bitchat
+// brindavanchat
 //
 // Lightweight palette generator that keeps peer colors evenly spaced.
 //

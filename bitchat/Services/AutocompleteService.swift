@@ -1,6 +1,6 @@
 //
 // AutocompleteService.swift
-// bitchat
+// brindavanchat
 //
 // Handles autocomplete suggestions for mentions and commands
 // This is free and unencumbered software released into the public domain.

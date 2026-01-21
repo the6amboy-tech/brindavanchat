@@ -1,6 +1,6 @@
 //
 // NostrTransportTests.swift
-// bitchat
+// brindavanchat
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -8,7 +8,7 @@
 
 import Foundation
 import Testing
-@testable import bitchat
+@testable import brindavanchat
 
 @Suite("NostrTransport Thread Safety Tests")
 struct NostrTransportTests {

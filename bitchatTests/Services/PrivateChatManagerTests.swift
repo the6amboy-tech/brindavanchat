@@ -1,13 +1,13 @@
 //
 // PrivateChatManagerTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for PrivateChatManager read receipt and selection behavior.
 //
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 struct PrivateChatManagerTests {
 
@@ -18,7 +18,7 @@ struct PrivateChatManagerTests {
         let peerID = PeerID(str: "00000000000000AA")
 
         manager.privateChats[peerID] = [
-            BitchatMessage(
+            brindavanchatMessage(
                 id: "pm-1",
                 sender: "Peer",
                 content: "Hi",
@@ -49,7 +49,7 @@ struct PrivateChatManagerTests {
         transport.reachablePeers.insert(peerID)
 
         manager.privateChats[peerID] = [
-            BitchatMessage(
+            brindavanchatMessage(
                 id: "pm-2",
                 sender: "Peer",
                 content: "Hi",

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import bitchat
+@testable import brindavanchat
 
 struct GossipSyncManagerTests {
 
@@ -22,7 +22,7 @@ struct GossipSyncManagerTests {
             let senderID = try #require(Data(hexString: "1122334455667788"))
             
             for i in 0..<iterations {
-                let packet = BitchatPacket(
+                let packet = brindavanchatPacket(
                     type: MessageType.message.rawValue,
                     senderID: senderID,
                     recipientID: nil,
@@ -55,7 +55,7 @@ struct GossipSyncManagerTests {
         let senderData = try #require(Data(hexString: peerHex))
         let initialTimestampMs = UInt64(Date().timeIntervalSince1970 * 1000)
 
-        let announcePacket = BitchatPacket(
+        let announcePacket = brindavanchatPacket(
             type: MessageType.announce.rawValue,
             senderID: senderData,
             recipientID: nil,
@@ -65,7 +65,7 @@ struct GossipSyncManagerTests {
             ttl: 1
         )
 
-        let messagePacket = BitchatPacket(
+        let messagePacket = brindavanchatPacket(
             type: MessageType.message.rawValue,
             senderID: senderData,
             recipientID: nil,
@@ -101,7 +101,7 @@ struct GossipSyncManagerTests {
         let senderData = try #require(Data(hexString: peerHex))
         let staleTimestampMs = UInt64(Date().addingTimeInterval(-(config.stalePeerTimeoutSeconds + 1)).timeIntervalSince1970 * 1000)
 
-        let freshMessage = BitchatPacket(
+        let freshMessage = brindavanchatPacket(
             type: MessageType.message.rawValue,
             senderID: senderData,
             recipientID: nil,
@@ -112,7 +112,7 @@ struct GossipSyncManagerTests {
         )
         manager.onPublicPacketSeen(freshMessage)
 
-        let announcePacket = BitchatPacket(
+        let announcePacket = brindavanchatPacket(
             type: MessageType.announce.rawValue,
             senderID: senderData,
             recipientID: nil,
@@ -148,7 +148,7 @@ struct GossipSyncManagerTests {
         let sender = try #require(Data(hexString: "1122334455667788"))
         let now = UInt64(Date().timeIntervalSince1970 * 1000)
 
-        let announcePacket = BitchatPacket(
+        let announcePacket = brindavanchatPacket(
             type: MessageType.announce.rawValue,
             senderID: sender,
             recipientID: nil,
@@ -157,7 +157,7 @@ struct GossipSyncManagerTests {
             signature: nil,
             ttl: 1
         )
-        let messagePacket = BitchatPacket(
+        let messagePacket = brindavanchatPacket(
             type: MessageType.message.rawValue,
             senderID: sender,
             recipientID: nil,
@@ -166,7 +166,7 @@ struct GossipSyncManagerTests {
             signature: nil,
             ttl: 1
         )
-        let fragmentPacket = BitchatPacket(
+        let fragmentPacket = brindavanchatPacket(
             type: MessageType.fragment.rawValue,
             senderID: sender,
             recipientID: nil,
@@ -175,7 +175,7 @@ struct GossipSyncManagerTests {
             signature: nil,
             ttl: 1
         )
-        let filePacket = BitchatPacket(
+        let filePacket = brindavanchatPacket(
             type: MessageType.fileTransfer.rawValue,
             senderID: sender,
             recipientID: nil,
@@ -219,7 +219,7 @@ struct GossipSyncManagerTests {
         let sender = try #require(Data(hexString: "aabbccddeeff0011"))
         let now = UInt64(Date().timeIntervalSince1970 * 1000)
 
-        let messagePacket = BitchatPacket(
+        let messagePacket = brindavanchatPacket(
             type: MessageType.message.rawValue,
             senderID: sender,
             recipientID: nil,
@@ -229,7 +229,7 @@ struct GossipSyncManagerTests {
             ttl: 1
         )
 
-        let fragmentPacket = BitchatPacket(
+        let fragmentPacket = brindavanchatPacket(
             type: MessageType.fragment.rawValue,
             senderID: sender,
             recipientID: nil,
@@ -255,11 +255,11 @@ struct GossipSyncManagerTests {
 
 private final class RecordingDelegate: GossipSyncManager.Delegate {
     var onSend: (() -> Void)?
-    private(set) var lastPacket: BitchatPacket?
-    private(set) var packets: [BitchatPacket] = []
+    private(set) var lastPacket: brindavanchatPacket?
+    private(set) var packets: [brindavanchatPacket] = []
     private let lock = NSLock()
 
-    func sendPacket(_ packet: BitchatPacket) {
+    func sendPacket(_ packet: brindavanchatPacket) {
         lock.lock()
         lastPacket = packet
         packets.append(packet)
@@ -267,11 +267,11 @@ private final class RecordingDelegate: GossipSyncManager.Delegate {
         onSend?()
     }
 
-    func sendPacket(to peerID: PeerID, packet: BitchatPacket) {
+    func sendPacket(to peerID: PeerID, packet: brindavanchatPacket) {
         sendPacket(packet)
     }
 
-    func signPacketForBroadcast(_ packet: BitchatPacket) -> BitchatPacket {
+    func signPacketForBroadcast(_ packet: brindavanchatPacket) -> brindavanchatPacket {
         packet
     }
     

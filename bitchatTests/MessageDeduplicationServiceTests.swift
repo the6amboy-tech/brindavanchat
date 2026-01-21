@@ -1,6 +1,6 @@
 //
 // MessageDeduplicationServiceTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for MessageDeduplicationService, LRUDeduplicationCache, and ContentNormalizer.
 // This is free and unencumbered software released into the public domain.
@@ -8,7 +8,7 @@
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 // MARK: - LRU Deduplication Cache Tests
 

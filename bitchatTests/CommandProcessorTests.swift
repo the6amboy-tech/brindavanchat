@@ -1,5 +1,5 @@
 import Testing
-@testable import bitchat
+@testable import brindavanchat
 
 struct CommandProcessorTests {
     private var identityManager = MockIdentityManager(MockKeychain())

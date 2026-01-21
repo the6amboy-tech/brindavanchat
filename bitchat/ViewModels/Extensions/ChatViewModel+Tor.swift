@@ -1,6 +1,6 @@
 //
 // ChatViewModel+Tor.swift
-// bitchat
+// brindavanchat
 //
 // Tor lifecycle handling for ChatViewModel
 //

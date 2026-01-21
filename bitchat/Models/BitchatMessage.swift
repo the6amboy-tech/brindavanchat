@@ -1,6 +1,6 @@
 //
-// BitchatMessage.swift
-// bitchat
+// brindavanchatMessage.swift
+// brindavanchat
 //
 // This is free and unencumbered software released into the public domain.
 // For more information, see <https://unlicense.org>
@@ -8,11 +8,11 @@
 
 import Foundation
 
-/// Represents a user-visible message in the BitChat system.
+/// Represents a user-visible message in the brindavanchat system.
 /// Handles both broadcast messages and private encrypted messages,
 /// with support for mentions, replies, and delivery tracking.
 /// - Note: This is the primary data model for chat messages
-final class BitchatMessage: Codable {
+final class brindavanchatMessage: Codable {
     let id: String
     let sender: String
     let content: String
@@ -71,8 +71,8 @@ final class BitchatMessage: Codable {
 
 // MARK: - Equatable Conformance
 
-extension BitchatMessage: Equatable {
-    static func == (lhs: BitchatMessage, rhs: BitchatMessage) -> Bool {
+extension brindavanchatMessage: Equatable {
+    static func == (lhs: brindavanchatMessage, rhs: brindavanchatMessage) -> Bool {
         return lhs.id == rhs.id &&
                lhs.sender == rhs.sender &&
                lhs.content == rhs.content &&
@@ -89,7 +89,7 @@ extension BitchatMessage: Equatable {
 
 // MARK: - Binary encoding
 
-extension BitchatMessage {
+extension brindavanchatMessage {
     func toBinaryPayload() -> Data? {
         var data = Data()
         
@@ -322,7 +322,7 @@ extension BitchatMessage {
 
 // MARK: - Helpers
 
-extension BitchatMessage {
+extension brindavanchatMessage {
     
     private static let timestampFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -335,7 +335,7 @@ extension BitchatMessage {
     }
 }
 
-extension Array where Element == BitchatMessage {
+extension Array where Element == brindavanchatMessage {
     /// Filters out empty ones and deduplicate by ID while preserving order (from oldest to newest)
     func cleanedAndDeduped() -> [Element] {
         let arr = filter { $0.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false }
@@ -343,7 +343,7 @@ extension Array where Element == BitchatMessage {
             return arr
         }
         var seen = Set<String>()
-        var dedup: [BitchatMessage] = []
+        var dedup: [brindavanchatMessage] = []
         for m in arr.sorted(by: { $0.timestamp < $1.timestamp }) {
             if !seen.contains(m.id) {
                 dedup.append(m)

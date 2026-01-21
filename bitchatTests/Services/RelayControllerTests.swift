@@ -1,13 +1,13 @@
 //
 // RelayControllerTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for relay decision logic.
 //
 
 import Testing
 import Foundation
-@testable import bitchat
+@testable import brindavanchat
 
 struct RelayControllerTests {
 

@@ -1,6 +1,6 @@
 //
 // MessageFormattingEngineTests.swift
-// bitchatTests
+// brindavanchatTests
 //
 // Tests for MessageFormattingEngine regex patterns and utility functions.
 // This is free and unencumbered software released into the public domain.
@@ -9,7 +9,7 @@
 import Testing
 import Foundation
 import SwiftUI
-@testable import bitchat
+@testable import brindavanchat
 
 struct MessageFormattingEngineTests {
 
